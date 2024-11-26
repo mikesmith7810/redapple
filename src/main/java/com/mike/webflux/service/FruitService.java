@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Service
+// @Service
 public class FruitService {
 
-  @Autowired private ReactiveMongoTemplate reactiveMongoTemplate;
+  private ReactiveMongoTemplate reactiveMongoTemplate;
+
+  public FruitService(ReactiveMongoTemplate reactiveMongoTemplate) {
+    this.reactiveMongoTemplate = reactiveMongoTemplate;
+  }
 
   public Mono<Fruit> findById(String id) {
     return reactiveMongoTemplate.findById(id, Fruit.class);
