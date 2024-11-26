@@ -1,6 +1,5 @@
 package com.mike.webflux.routing;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 import com.mike.webflux.handlers.FruitHandler;
@@ -22,7 +21,8 @@ public class FruitModule {
   public RouterFunction<ServerResponse> fruitRoutes() {
     return route()
         .GET("/fruit/{name}", fruitHandler::getFruit)
-        .POST("/fruit/", fruitHandler::saveFruit)
+        .GET("/fruit", fruitHandler::getAllFruit)
+        .POST("/fruit", fruitHandler::saveFruit)
         .build();
   }
 }

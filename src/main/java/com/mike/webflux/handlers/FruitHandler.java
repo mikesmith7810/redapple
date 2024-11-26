@@ -4,6 +4,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ba
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 import com.mike.webflux.model.Fruit;
+import java.time.Duration;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -25,9 +26,16 @@ public class FruitHandler {
   }
 
   public Mono<ServerResponse> getFruit(ServerRequest request) {
-    return ok().contentType(MediaType.APPLICATION_JSON)
+    return ok().contentType(MediaType.TEXT_EVENT_STREAM)
         .body(
             reactiveMongoTemplate.findById(request.pathVariable("name"), Fruit.class), Fruit.class);
+  }
+
+  public Mono<ServerResponse> getAllFruit(ServerRequest request) {
+    return ok().contentType(MediaType.TEXT_EVENT_STREAM)
+        .body(
+            reactiveMongoTemplate.findAll(Fruit.class).delayElements(Duration.ofSeconds(1)),
+            Fruit.class);
   }
 
   public Mono<ServerResponse> saveFruit(ServerRequest serverRequest) {
